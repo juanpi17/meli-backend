@@ -2,6 +2,7 @@ exports.isMutant = function (dna) {
 
     var mutant = "false";
     // var mutant = false;
+    var sequenceLength = 4;
     var allowedLetters = ['A', 'T', 'C', 'G'];
 
     try {
@@ -35,7 +36,7 @@ exports.isMutant = function (dna) {
 
                 mutant = "Valid matrix";
 
-                // // console.log("\n");
+                // console.log("\n");
                 // dna.forEach(row => {
                 //     Array.from(row).forEach(letter => {
                 //         process.stdout.write(letter + " ");
@@ -43,9 +44,41 @@ exports.isMutant = function (dna) {
                 //     console.log("\n");
                 // });
                 
+                var dnaMatrix = convertArrayToMatrix(dna);
+
+                
+                console.log("G = " +  dnaMatrix[1][4]);
+                console.log("C = " + dnaMatrix[1][5]);
+
+                console.log("\n");
+                dnaMatrix.forEach(row => {
+                    row.forEach(letter => {
+                        process.stdout.write(letter + " ");
+                    });
+                    console.log("\n");
+                });
+
+
                 // let's count the number of sequences
                 var numSeq = 0;
+                var sequences = generateSearchequences(allowedLetters, sequenceLength);
 
+                console.log(sequences);
+
+                searchOnDnaMatrix(dnaMatrix, sequences[0], 0, 0);
+
+                // Horizontal matrix
+                //numSeq += searchHorizontalSequences(dna, sequences);
+
+                //var vDna = convertVerticalMatrix(dna);
+
+                // console.log("\nVertical\n");
+                // vDna.forEach(row => {
+                //     Array.from(row).forEach(letter => {
+                //         process.stdout.write(letter + " ");
+                //     });
+                //     console.log("\n");
+                // });
             } 
 
         }
@@ -57,6 +90,103 @@ exports.isMutant = function (dna) {
     } 
 };
 
+// convert dna array to a matrix 
+function convertArrayToMatrix(dna) {
+    var dnaMatrix = [];
+    dna.forEach(row => {
+        var dnaRow = [];
+        Array.from(row).forEach(letter => {
+            dnaRow.push( letter );
+        });
+        dnaMatrix.push( dnaRow );
+    });
+
+    return dnaMatrix;
+}
+
+function searchOnDnaMatrix(dna, sequence, row, col) {
+    var foundSeq = false;
+    var numSeq = 0;
+
+    // try to search sequence only if the letter from the dna is part of the sequence
+    if (dna[row][col] === sequence[0]) {
+
+        // as the first position is already matched, start from the next one
+
+        // there are only 4 possible directions to search: horizontal, vertical, main diagonal and secondary diagonal 
+
+        // Horizontal matches
+        var n;
+        for (n = 1; n < sequence.length; n++) {
+            
+            if (typeof dna[row][n] === 'undefined' || dna[row][n] !== sequence[n]) {
+                break;
+            }
+        }
+
+        // if the length of the sequence has the same value as n (length of the sequence in the dna) increment numSeq
+        if (sequence.length === n) {
+            numSeq++;
+        }
+
+
+
+        
+       
+    }
+
+    return found; 
+} 
+
+
+// generate sequences 
+function generateSearchequences(searchArray, number) {
+    var sequences = [];
+    searchArray.forEach(letter => {
+        sequences.push( Array.from(letter.repeat(number)) );
+    });
+
+    return sequences;
+}
+
+// count number of horizontal matches
+function searchHorizontalSequences(matrix, stringSeq) {
+    var numSeq = 0;
+    matrix.forEach(row => {
+        stringSeq.forEach(string => {
+            numSeq += row.search(string) !== -1 ? 1 : 0;
+        });
+    });
+
+    return numSeq;
+}
+
+// count number of vertical matches
+function searchVerticalSequences(matrix, stringSeq) {
+    var numSeq = 0;
+    matrix.forEach(row => {
+        stringSeq.forEach(string => {
+            numSeq += row.search(string) !== -1 ? 1 : 0;
+        });
+    });
+
+    return numSeq;
+}
+
+// transpose adn matrix
+function convertVerticalMatrix(matrix) {
+    
+    var verticalMatrix = [];
+    // var matrixLength = matrix.length;
+
+    for (let i = 0; i < matrix.length; i++) {
+        const row = matrix[i];
+        
+        verticalMatrix.push( Array.from(row).reduce((col, letter) => col + letter[0], '') );
+    }
+
+    return verticalMatrix;
+}
 // check matrix from left to right
 // function checkHorizontalSequences(matrix) {
 
