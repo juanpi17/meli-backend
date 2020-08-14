@@ -47,17 +47,18 @@ exports.isMutant = function (dna) {
                 var dnaMatrix = convertArrayToMatrix(dna);
 
                 
-                console.log("G = " +  dnaMatrix[1][4]);
-                console.log("C = " + dnaMatrix[1][5]);
+                // console.log("G = " +  dnaMatrix[1][4]);
+                // console.log("C = " + dnaMatrix[1][5]);
 
-                console.log("\n");
-                dnaMatrix.forEach(row => {
-                    row.forEach(letter => {
-                        process.stdout.write(letter + " ");
-                    });
-                    console.log("\n");
-                });
+                // console.log("\n");
+                // dnaMatrix.forEach(row => {
+                //     row.forEach(letter => {
+                //         process.stdout.write(letter + " ");
+                //     });
+                //     console.log("\n");
+                // });
 
+                console.log(dnaMatrix);
 
                 // let's count the number of sequences
                 var numSeq = 0;
@@ -65,7 +66,13 @@ exports.isMutant = function (dna) {
 
                 console.log(sequences);
 
-                searchOnDnaMatrix(dnaMatrix, sequences[0], 0, 0);
+                searchSequences(dnaMatrix, sequences);
+
+                // searchOnDnaMatrix(dnaMatrix, sequences[1], 5, 0);
+
+
+
+                // searchOnDnaMatrix(dnaMatrix, sequences[1], 5, 0);
 
                 // Horizontal matrix
                 //numSeq += searchHorizontalSequences(dna, sequences);
@@ -104,11 +111,38 @@ function convertArrayToMatrix(dna) {
     return dnaMatrix;
 }
 
+
+function searchSequences(dna, sequences) {
+
+    var numMatchesSeq = 0;
+
+    // sequences.map(seq => {
+        
+    sequences.forEach(seq => {
+
+        for (let r = 0; r < dna.length; r++) {
+            
+            for (let c = 0; c < dna.length; c++) {
+
+                // numMatchesSeq += searchOnDnaMatrix(dna, sequences[2], r, c);
+                numMatchesSeq += searchOnDnaMatrix(dna, seq, r, c);
+            }
+        }
+
+    });
+
+    //     return numMatchesSeq += searchOnDnaMatrix(dna, seq, 0, 0);
+    // });
+
+    console.log("\nFinal = " + numMatchesSeq);
+}
+
+
 function searchOnDnaMatrix(dna, sequence, row, col) {
-    var foundSeq = false;
     var numSeq = 0;
 
     // try to search sequence only if the letter from the dna is part of the sequence
+    console.log("\n" + sequence);
     if (dna[row][col] === sequence[0]) {
 
         // as the first position is already matched, start from the next one
@@ -118,10 +152,13 @@ function searchOnDnaMatrix(dna, sequence, row, col) {
         // Horizontal matches
         var n;
         for (n = 1; n < sequence.length; n++) {
-            
-            if (typeof dna[row][n] === 'undefined' || dna[row][n] !== sequence[n]) {
+
+            if (col + n >= dna.length || col + n < 0) 
                 break;
-            }
+
+            if (typeof dna[row][col + n] === 'undefined' || dna[row][col + n] !== sequence[n])
+                break;
+
         }
 
         // if the length of the sequence has the same value as n (length of the sequence in the dna) increment numSeq
@@ -129,13 +166,68 @@ function searchOnDnaMatrix(dna, sequence, row, col) {
             numSeq++;
         }
 
-
-
         
+        process.stdout.write("H:" + numSeq);
+        // numSeq = 0;
+
+        // Vertical matches
+        for (n = 1; n < sequence.length; n++) {
+
+            if (row + n >= dna.length || row + n < 0) 
+                break;
+
+            if (typeof dna[row + n][col] === 'undefined' || dna[row + n][col] !== sequence[n])
+                break;
+
+        }
+
+        // if the length of the sequence has the same value as n (length of the sequence in the dna) increment numSeq
+        if (sequence.length === n) {
+            numSeq++;
+        }
+
+        process.stdout.write(", V:" + numSeq);
+        // numSeq = 0;
+
+        // Main diagonal matches 
+        for (n = 1; n < sequence.length; n++) {
+            
+            if (row + n >= dna.length || row + n < 0 || col + n >= dna.length || col + n < 0) 
+                break;
+
+            if (typeof dna[row + n][col + n] === 'undefined' || dna[row + n][col + n] !== sequence[n])
+                break;
+
+        }
+
+        // if the length of the sequence has the same value as n (length of the sequence in the dna) increment numSeq
+        if (sequence.length === n) {
+            numSeq++;
+        }
+
+        process.stdout.write(", D1:" + numSeq);
+        // numSeq = 0;
+
+        // Secondary diagonal matches 
+        for (n = 1; n < sequence.length; n++) {
+            
+            if (row - n >= dna.length || row - n < 0 || col + n >= dna.length || col + n < 0) 
+                break;
+
+            if (typeof dna[row - n][col + n] === 'undefined' || dna[row - n][col + n] !== sequence[n])
+                break;
+        }
+
+        // if the length of the sequence has the same value as n (length of the sequence in the dna) increment numSeq
+        if (sequence.length === n) {
+            numSeq++;
+        }
+
+        process.stdout.write(", D2:" + numSeq);
        
     }
 
-    return found; 
+    return numSeq; 
 } 
 
 
@@ -148,50 +240,3 @@ function generateSearchequences(searchArray, number) {
 
     return sequences;
 }
-
-// count number of horizontal matches
-function searchHorizontalSequences(matrix, stringSeq) {
-    var numSeq = 0;
-    matrix.forEach(row => {
-        stringSeq.forEach(string => {
-            numSeq += row.search(string) !== -1 ? 1 : 0;
-        });
-    });
-
-    return numSeq;
-}
-
-// count number of vertical matches
-function searchVerticalSequences(matrix, stringSeq) {
-    var numSeq = 0;
-    matrix.forEach(row => {
-        stringSeq.forEach(string => {
-            numSeq += row.search(string) !== -1 ? 1 : 0;
-        });
-    });
-
-    return numSeq;
-}
-
-// transpose adn matrix
-function convertVerticalMatrix(matrix) {
-    
-    var verticalMatrix = [];
-    // var matrixLength = matrix.length;
-
-    for (let i = 0; i < matrix.length; i++) {
-        const row = matrix[i];
-        
-        verticalMatrix.push( Array.from(row).reduce((col, letter) => col + letter[0], '') );
-    }
-
-    return verticalMatrix;
-}
-// check matrix from left to right
-// function checkHorizontalSequences(matrix) {
-
-//     matrix.forEach(row => {
-        
-//     });
-
-// }
