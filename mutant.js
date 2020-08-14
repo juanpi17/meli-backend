@@ -115,7 +115,24 @@ function convertArrayToMatrix(dna) {
 function searchSequences(dna, sequences) {
 
     var numMatchesSeq = 0;
+    var matchesFound = sequences.map(seq => {
+        return { [seq[0]]: 0};
+    });
+    // var matches = sequences.map(seq => {
+    //     return { [seq[0]]: 0};
+    // });
+    
 
+    // var matchesFound = matches.reduce(function(map, obj) {
+    //     map[obj.key] = obj.val;
+    //     return map;
+    // }, {});
+
+    // var matchesFound = sequences.map(seq => {
+    //     return { [seq[0]]: 0};
+    // });
+
+    console.log(matchesFound);
     // sequences.map(seq => {
         
     sequences.forEach(seq => {
@@ -125,7 +142,7 @@ function searchSequences(dna, sequences) {
             for (let c = 0; c < dna.length; c++) {
 
                 // numMatchesSeq += searchOnDnaMatrix(dna, sequences[2], r, c);
-                numMatchesSeq += searchOnDnaMatrix(dna, seq, r, c);
+                numMatchesSeq += searchOnDnaMatrix(dna, seq, r, c, matchesFound);
             }
         }
 
@@ -134,11 +151,21 @@ function searchSequences(dna, sequences) {
     //     return numMatchesSeq += searchOnDnaMatrix(dna, seq, 0, 0);
     // });
 
+
+
     console.log("\nFinal = " + numMatchesSeq);
+
+    console.log(matchesFound);
 }
 
 
-function searchOnDnaMatrix(dna, sequence, row, col) {
+// prevent counting matches of longer sequences twice
+function removePossibleDuplicates() {
+
+}
+
+
+function searchOnDnaMatrix(dna, sequence, row, col, matchesFound) {
     var numSeq = 0;
 
     // try to search sequence only if the letter from the dna is part of the sequence
@@ -151,6 +178,7 @@ function searchOnDnaMatrix(dna, sequence, row, col) {
 
         // Horizontal matches
         var n;
+        var positions = [];
         for (n = 1; n < sequence.length; n++) {
 
             if (col + n >= dna.length || col + n < 0) 
@@ -159,11 +187,13 @@ function searchOnDnaMatrix(dna, sequence, row, col) {
             if (typeof dna[row][col + n] === 'undefined' || dna[row][col + n] !== sequence[n])
                 break;
 
+            positions.push( [row, col + n] );
         }
 
         // if the length of the sequence has the same value as n (length of the sequence in the dna) increment numSeq
         if (sequence.length === n) {
             numSeq++;
+            matchesFound[sequence[0]].push( positions );
         }
 
         
