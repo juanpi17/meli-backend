@@ -1,6 +1,7 @@
 
-// Import express framework
+// Import npm packages
 const express = require('express');
+const mongoose = require('mongoose');
 
 // Import middleware
 const bodyParser = require('body-parser')
@@ -10,6 +11,15 @@ const PORT = process.env.PORT || 8000
 
 // Create express app
 const app = express()
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('Mongoose is connected!!!!');
+});
 
 // Implement middleware
 app.use(express.json())
