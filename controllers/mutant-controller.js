@@ -10,9 +10,9 @@ exports.isMutant = async (req, res) => {
     const dna = req.body.dna;
 
     if ( isMutant(dna) ) 
-        res.status(403).send("Mutant")
+        res.status(200).send("Mutant")
     else
-        res.status(200).send("Not mutant") 
+        res.status(403).send("Not mutant") 
 };
 
 // main functionality
