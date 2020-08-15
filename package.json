@@ -1,0 +1,28 @@
+{
+  "name": "meli-backend",
+  "version": "1.0.0",
+  "description": "Test de backend para Mercado Libre",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juanpi17/meli-backend.git"
+  },
+  "keywords": [
+    "meli",
+    "test"
+  ],
+  "author": "Juan Pablo Lepore",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juanpi17/meli-backend/issues"
+  },
+  "homepage": "https://github.com/juanpi17/meli-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}

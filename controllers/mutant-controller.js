@@ -1,4 +1,25 @@
-exports.isMutant = function (dna) {
+const { response } = require('express');
+// app.post('/mutant', function (req, res) {
+//     res.send('<h1>Hello World!</h1>')
+    
+//   })
+
+exports.isMutant = async (req, res) => {
+
+    const dna = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"];
+    const dna2 = ["ATGCGA","CAGTTC","TTTTGT","AGTAGG","CTCCTA","TCACTG"];
+    const dna3 = ["ATGCGA","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+
+    // not square matrix
+    const dna4 = ["ATGCG","CCGTTC","TTATGT","AGAGG","CCCTTA","TCACTG"];
+    // empty
+    const dna5 = [];
+    // other letters
+    const dna6 = ["ATGCGS","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+
+    // bigger matrix size
+    const dna7 = ["ATGCGAA","CAGTTCA","TTTTGTA","AGTAGGA","CTCCTAC","TCACTGG","AGTCTGA"];
+
 
     var mutant = false;
     // length of the sequence to be matched
@@ -47,7 +68,11 @@ exports.isMutant = function (dna) {
     } catch (error) {
         console.log(error);
     } finally {
-        return mutant;
+
+        if ( !mutant ) 
+            res.status(200).send("Not mutant")
+        else
+            res.status(403).send("Mutant")
     } 
 };
 
