@@ -1,25 +1,37 @@
 const { response } = require('express');
-// app.post('/mutant', function (req, res) {
-//     res.send('<h1>Hello World!</h1>')
-    
-//   })
 
 exports.isMutant = async (req, res) => {
 
-    const dna = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"];
-    const dna2 = ["ATGCGA","CAGTTC","TTTTGT","AGTAGG","CTCCTA","TCACTG"];
-    const dna3 = ["ATGCGA","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+    if (!req.body.dna) {
+        res.status(403).send("No dna to check")
+    }
 
-    // not square matrix
-    const dna4 = ["ATGCG","CCGTTC","TTATGT","AGAGG","CCCTTA","TCACTG"];
-    // empty
-    const dna5 = [];
-    // other letters
-    const dna6 = ["ATGCGS","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+    const dna = req.body.dna;
 
-    // bigger matrix size
-    const dna7 = ["ATGCGAA","CAGTTCA","TTTTGTA","AGTAGGA","CTCCTAC","TCACTGG","AGTCTGA"];
+    // res.status(403).send("Mutant")
 
+    // const dna1 = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"];
+    // const dna2 = ["ATGCGA","CAGTTC","TTTTGT","AGTAGG","CTCCTA","TCACTG"];
+    // const dna3 = ["ATGCGA","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+
+    // // not square matrix
+    // const dna4 = ["ATGCG","CCGTTC","TTATGT","AGAGG","CCCTTA","TCACTG"];
+    // // empty
+    // const dna5 = [];
+    // // other letters
+    // const dna6 = ["ATGCGS","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+
+    // // bigger matrix size
+    // const dna7 = ["ATGCGAA","CAGTTCA","TTTTGTA","AGTAGGA","CTCCTAC","TCACTGG","AGTCTGA"];
+
+    if ( isMutant(dna) ) 
+        res.status(403).send("Mutant")
+    else
+        res.status(200).send("Not mutant") 
+};
+
+// main functionality
+function isMutant(dna) {
 
     var mutant = false;
     // length of the sequence to be matched
@@ -68,13 +80,9 @@ exports.isMutant = async (req, res) => {
     } catch (error) {
         console.log(error);
     } finally {
-
-        if ( !mutant ) 
-            res.status(200).send("Not mutant")
-        else
-            res.status(403).send("Mutant")
+        return mutant;
     } 
-};
+}
 
 // convert dna array to a matrix 
 function convertArrayToMatrix(dna) {
