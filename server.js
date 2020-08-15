@@ -26,8 +26,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// Import route
+// Import routes
 const mutantRouter = require('./routes/mutant-route')
+const statsRouter = require('./routes/stats-route')
 
 app.get('/', function (req, res) {
   res.send('<h1>Meli Backend Test</h1><p>See https://github.com/juanpi17/meli-backend for more details</p><p>Created by Juan Pablo Lepore</p>')
@@ -35,6 +36,9 @@ app.get('/', function (req, res) {
 
 // Implement route for '/mutant' endpoint
 app.use('/mutant', mutantRouter)
+
+// Implement route for '/stats' endpoint
+app.use('/stats', statsRouter)
 
 // Implement route for errors
 app.use((err, req, res, next) => {
