@@ -8,7 +8,9 @@ const Mutant = require('../models/mutant');
 const router = express.Router()
 
 router.get('/', function(req, res) {
-    res.send("Stats section");
+    res.setHeader('Content-Type', 'application/json');
+    res.write(JSON.stringify({ a: 1 }));
+    res.end();
 
     // const mutant = new Mutant({
     //     "dna": '["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]',
