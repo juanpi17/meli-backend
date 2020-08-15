@@ -1,8 +1,9 @@
 exports.isMutant = function (dna) {
 
     var mutant = "false";
-    // var mutant = false;
+    // length of the sequence to be matched
     var sequenceLength = 4;
+    // allowed sequence letters
     var allowedLetters = ['A', 'T', 'C', 'G'];
 
     try {
@@ -15,82 +16,30 @@ exports.isMutant = function (dna) {
 
             // if the matrix isn't square, return false
             var vLength = dna.length;
-
-            console.log("vLength = " + vLength);
             dna.forEach((row, index) => {
                 if (row.length != vLength){
                     squareMatrix = false;
                 }
 
+                // if the matrix has other letters than the allowed, return false
                 Array.from(row).forEach((letter, i) => {
-                    console.log("Letter " + i + " = " + letter);
                     if (!allowedLetters.includes(letter)) {
                         allowedMatrix = false;
                     }
                 });
-                console.log("Row " + index + " = " + row.length);
             });
 
             // only process data if it's an square matrix and contains valid letters
             if (squareMatrix && allowedMatrix ) {
 
-                mutant = "Valid matrix";
-
-                // console.log("\n");
-                // dna.forEach(row => {
-                //     Array.from(row).forEach(letter => {
-                //         process.stdout.write(letter + " ");
-                //     });
-                //     console.log("\n");
-                // });
-                
+                // convert string to 2d array
                 var dnaMatrix = convertArrayToMatrix(dna);
-
-                
-                // console.log("G = " +  dnaMatrix[1][4]);
-                // console.log("C = " + dnaMatrix[1][5]);
-
-                // console.log("\n");
-                // dnaMatrix.forEach(row => {
-                //     row.forEach(letter => {
-                //         process.stdout.write(letter + " ");
-                //     });
-                //     console.log("\n");
-                // });
-
-                console.log(dnaMatrix);
-
+                // generate all the allowed sequences
                 var sequences = generateSearchequences(allowedLetters, sequenceLength);
 
-                console.log(sequences);
-
-                // let's count the number of sequences
+                // get number of matches
                 var numSeq = searchSequences(dnaMatrix, sequences);
-
-                if (numSeq > 1) {
-                    console.log("This guy is a mutant!");
-                } else {
-                    console.log("This guy isn't a mutant");
-                }
-
-                // searchOnDnaMatrix(dnaMatrix, sequences[1], 5, 0);
-
-
-
-                // searchOnDnaMatrix(dnaMatrix, sequences[1], 5, 0);
-
-                // Horizontal matrix
-                //numSeq += searchHorizontalSequences(dna, sequences);
-
-                //var vDna = convertVerticalMatrix(dna);
-
-                // console.log("\nVertical\n");
-                // vDna.forEach(row => {
-                //     Array.from(row).forEach(letter => {
-                //         process.stdout.write(letter + " ");
-                //     });
-                //     console.log("\n");
-                // });
+                mutant = numSeq > 1 ? true : false;
             } 
 
         }
@@ -116,7 +65,6 @@ function convertArrayToMatrix(dna) {
     return dnaMatrix;
 }
 
-
 // generate sequences 
 function generateSearchequences(searchArray, number) {
     var sequences = [];
@@ -136,23 +84,15 @@ function searchSequences(dna, sequences) {
     sequences.forEach(seq => {
         matchesFound[seq] = [];
     });
-
-    console.log(matchesFound);
-    // sequences.map(seq => {
     
     // go through all the sequences
     sequences.forEach(seq => {
-
         for (let r = 0; r < dna.length; r++) {
-            
             for (let c = 0; c < dna.length; c++) {
                 numMatchesSeq += searchOnDnaMatrix(dna, seq, r, c, matchesFound);
             }
         }
-
     });
-
-    console.log("\nFinal = " + numMatchesSeq);
 
     // if a sequence on the dna matrix is longer than the sequence to be matched, it will be duplicated. Let's fix that.
     numMatchesSeq = removePossibleDuplicates(matchesFound, sequences, numMatchesSeq);
@@ -168,15 +108,12 @@ function searchOnDnaMatrix(dna, sequence, row, col, matchesFound) {
     // as the first position is already matched, start from the next one
     console.log("\n" + sequence);
     if (dna[row][col] === sequence[0]) {
-
-
-        // there are only 4 possible directions to search: horizontal, vertical, main diagonal and secondary diagonal 
+        // there are only 4 possible directions to search: horizontal, vertical, main diagonal and secondary diagonal
 
         // Horizontal matches
         var n;
         var positions = [row + ',' + col];
         for (n = 1; n < sequence.length; n++) {
-
             if (col + n >= dna.length || col + n < 0) 
                 break;
 
@@ -192,13 +129,8 @@ function searchOnDnaMatrix(dna, sequence, row, col, matchesFound) {
             matchesFound[sequence].push( positions );
         }
 
-        
-        process.stdout.write("H:" + numSeq);
-        // numSeq = 0;
-
         // Vertical matches
         for (n = 1; n < sequence.length; n++) {
-
             if (row + n >= dna.length || row + n < 0) 
                 break;
 
@@ -214,12 +146,8 @@ function searchOnDnaMatrix(dna, sequence, row, col, matchesFound) {
             matchesFound[sequence].push( positions );
         }
 
-        process.stdout.write(", V:" + numSeq);
-        // numSeq = 0;
-
         // Main diagonal matches 
         for (n = 1; n < sequence.length; n++) {
-            
             if (row + n >= dna.length || row + n < 0 || col + n >= dna.length || col + n < 0) 
                 break;
 
@@ -235,12 +163,8 @@ function searchOnDnaMatrix(dna, sequence, row, col, matchesFound) {
             matchesFound[sequence].push( positions );
         }
 
-        process.stdout.write(", D1:" + numSeq);
-        // numSeq = 0;
-
         // Secondary diagonal matches 
         for (n = 1; n < sequence.length; n++) {
-            
             if (row - n >= dna.length || row - n < 0 || col + n >= dna.length || col + n < 0) 
                 break;
 
@@ -256,8 +180,6 @@ function searchOnDnaMatrix(dna, sequence, row, col, matchesFound) {
             matchesFound[sequence].push( positions );
         }
 
-        process.stdout.write(", D2:" + numSeq);
-       
     }
 
     return numSeq; 
@@ -275,30 +197,21 @@ function removePossibleDuplicates(matchesFound, sequences, numMatchesSeq) {
 
         for (let i = 0; i < matchesFound[seq].length; i++) {
 
-            console.log(matchesFound[seq][i]);
             for (let j = i + 1; j < matchesFound[seq].length; j++) {
-                console.log(matchesFound[seq][j]);
-
                 // join the results to make it easier compare them
                 let merge = matchesFound[seq][i].concat(matchesFound[seq][j]);
+
                 // remove duplicated values. Ideally, the size of the filtered sequence is the size of the 2 concatenated arrays - 1 (the origin)
                 let filter = merge.filter(unique);
-                // console.log("Merge");
-                // console.log(merge);
-                // console.log("Filter");
-                // console.log(merge.filter(unique));
 
                 // if the filtered array has less positions than the 2 arrays combined minus the shared node, it's a duplicated match
                 if (filter.length < (2 * seq.length - 1)) {
-                    console.log("Eliminar seq");
                     numMatchesSeq--;
                 }
             }
-            // console.log("\n");
         }
 
     });
 
-    console.log("\nFinal Corregido = " + numMatchesSeq);
     return numMatchesSeq;
 }
