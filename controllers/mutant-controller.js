@@ -6,23 +6,8 @@ exports.isMutant = async (req, res) => {
         res.status(403).send("No dna to check")
     }
 
+    // get dna from request body
     const dna = req.body.dna;
-
-    // res.status(403).send("Mutant")
-
-    // const dna1 = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"];
-    // const dna2 = ["ATGCGA","CAGTTC","TTTTGT","AGTAGG","CTCCTA","TCACTG"];
-    // const dna3 = ["ATGCGA","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
-
-    // // not square matrix
-    // const dna4 = ["ATGCG","CCGTTC","TTATGT","AGAGG","CCCTTA","TCACTG"];
-    // // empty
-    // const dna5 = [];
-    // // other letters
-    // const dna6 = ["ATGCGS","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
-
-    // // bigger matrix size
-    // const dna7 = ["ATGCGAA","CAGTTCA","TTTTGTA","AGTAGGA","CTCCTAC","TCACTGG","AGTCTGA"];
 
     if ( isMutant(dna) ) 
         res.status(403).send("Mutant")
@@ -41,20 +26,20 @@ function isMutant(dna) {
 
     try {
 
-        // if dna isn't an array, return false
+        // if dna isn't an array, not mutant
         if (Array.isArray(dna) && dna.length > 0) {
 
             var squareMatrix = true;
             var allowedMatrix = true;
 
-            // if the matrix isn't square, return false
+            // if the matrix isn't square, not mutant
             var vLength = dna.length;
             dna.forEach((row, index) => {
                 if (row.length != vLength){
                     squareMatrix = false;
                 }
 
-                // if the matrix has other letters than the allowed, return false
+                // if the matrix has other letters than the allowed, not mutant
                 Array.from(row).forEach((letter, i) => {
                     if (!allowedLetters.includes(letter)) {
                         allowedMatrix = false;

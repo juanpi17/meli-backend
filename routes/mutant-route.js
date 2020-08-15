@@ -11,8 +11,6 @@ const router = express.Router()
 // Note:
 // Main route (in server.js) for mutant
 // is set to '/mutant'
-// This means that all items routes
-// will be prefixed with /mutant'
 router.post('/', mutantController.isMutant)
 router.get('/', function(req, res) {
     res.send("Send POST request to analyse DNA");
