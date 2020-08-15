@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 8000
 // Create express app
 const app = express()
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://juanpablo:30787004@cluster0.nrjca.azure.mongodb.net/mutantDB?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

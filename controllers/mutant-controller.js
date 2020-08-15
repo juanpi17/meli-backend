@@ -1,9 +1,12 @@
 const { response } = require('express');
 
+// Import Mutant model
+const Mutant = require('../models/mutant');
+
 exports.isMutant = async (req, res) => {
 
     if (!req.body.dna) {
-        res.status(403).send("No dna to check")
+        res.status(403).send("No DNA to check")
     }
 
     // get dna from request body
@@ -19,6 +22,8 @@ exports.isMutant = async (req, res) => {
 function isMutant(dna) {
 
     var mutant = false;
+    // true if the dna is valid (mutant or not mutant)
+    var dnaProcessed = false;
     // length of the sequence to be matched
     var sequenceLength = 4;
     // allowed sequence letters
@@ -50,6 +55,8 @@ function isMutant(dna) {
             // only process data if it's an square matrix and contains valid letters
             if (squareMatrix && allowedMatrix ) {
 
+                // dna valid!
+                dnaProcessed = true;
                 // convert string to 2d array
                 var dnaMatrix = convertArrayToMatrix(dna);
                 // generate all the allowed sequences
@@ -65,6 +72,37 @@ function isMutant(dna) {
     } catch (error) {
         console.log(error);
     } finally {
+
+        // save into database if the dna was processed
+        if (dnaProcessed) {
+
+            // create a string to make it easy to compare
+            var dnaString = dna.join();
+
+            const mutantDB = new Mutant({
+                "dna": dnaString,
+                "isMutant": mutant
+            });
+
+            // only insert if the dna isn't in the database yet
+            Mutant.update(
+                {dna: dnaString}, 
+                {$setOnInsert: mutantDB},
+                {upsert: true}, 
+                function(err, numAffected) { 
+                    if (err) {
+                        console.log('Sorry, internal server errors');
+                    } else {
+                        // Mutant Saved
+                        numAffected > 0 ?
+                            console.log('New DNA saved into database') :
+                            console.log('DNA already exists on database');
+                        ;
+                    }
+                }
+            );
+        }
+
         return mutant;
     } 
 }
