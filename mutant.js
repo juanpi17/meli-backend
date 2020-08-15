@@ -1,6 +1,6 @@
 exports.isMutant = function (dna) {
 
-    var mutant = "false";
+    var mutant = false;
     // length of the sequence to be matched
     var sequenceLength = 4;
     // allowed sequence letters
@@ -106,7 +106,6 @@ function searchOnDnaMatrix(dna, sequence, row, col, matchesFound) {
 
     // try to search sequence only if the letter from the dna is part of the sequence
     // as the first position is already matched, start from the next one
-    console.log("\n" + sequence);
     if (dna[row][col] === sequence[0]) {
         // there are only 4 possible directions to search: horizontal, vertical, main diagonal and secondary diagonal
 
