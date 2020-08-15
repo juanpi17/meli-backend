@@ -8,7 +8,7 @@ exports.isMutant = function (dna) {
     try {
 
         // if dna isn't an array, return false
-        if (Array.isArray(dna)) {
+        if (Array.isArray(dna) && dna.length > 0) {
 
             var squareMatrix = true;
             var allowedMatrix = true;
@@ -60,13 +60,18 @@ exports.isMutant = function (dna) {
 
                 console.log(dnaMatrix);
 
-                // let's count the number of sequences
-                var numSeq = 0;
                 var sequences = generateSearchequences(allowedLetters, sequenceLength);
 
                 console.log(sequences);
 
-                searchSequences(dnaMatrix, sequences);
+                // let's count the number of sequences
+                var numSeq = searchSequences(dnaMatrix, sequences);
+
+                if (numSeq > 1) {
+                    console.log("This guy is a mutant!");
+                } else {
+                    console.log("This guy isn't a mutant");
+                }
 
                 // searchOnDnaMatrix(dnaMatrix, sequences[1], 5, 0);
 
@@ -122,7 +127,7 @@ function generateSearchequences(searchArray, number) {
     return sequences;
 }
 
-
+// do the main loop of the search function
 function searchSequences(dna, sequences) {
 
     var numMatchesSeq = 0;
@@ -150,7 +155,9 @@ function searchSequences(dna, sequences) {
     console.log("\nFinal = " + numMatchesSeq);
 
     // if a sequence on the dna matrix is longer than the sequence to be matched, it will be duplicated. Let's fix that.
-    removePossibleDuplicates(matchesFound, sequences, numMatchesSeq);
+    numMatchesSeq = removePossibleDuplicates(matchesFound, sequences, numMatchesSeq);
+
+    return numMatchesSeq;
 }
 
 // main search function. Process all the 4 directions: horizontal, vertical and 2 diags
@@ -293,4 +300,5 @@ function removePossibleDuplicates(matchesFound, sequences, numMatchesSeq) {
     });
 
     console.log("\nFinal Corregido = " + numMatchesSeq);
+    return numMatchesSeq;
 }

@@ -3,9 +3,18 @@ var mutant = require("./mutant");
 
 const dna1 = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"];
 const dna2 = ["ATGCGA","CAGTTC","TTTTGT","AGTAGG","CTCCTA","TCACTG"];
+const dna3 = ["ATGCGA","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+
+// not square matrix
+const dna4 = ["ATGCG","CCGTTC","TTATGT","AGAGG","CCCTTA","TCACTG"];
+// empty
+const dna5 = [];
+// other letters
+const dna6 = ["ATGCGT","CCGTTC","TTATGT","AGAAGG","CCCTTA","TCACTG"];
+
 
 http.createServer(function(request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write(mutant.isMutant(dna2));
+  response.write(mutant.isMutant(dna6));
   response.end();
 }).listen(8000);
