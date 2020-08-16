@@ -11,6 +11,9 @@
 # testing
 /coverage
 
+# DotEnv configuration
+.env
+
 # production
 /build
 /server/build

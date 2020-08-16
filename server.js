@@ -2,6 +2,9 @@
 // Import npm packages
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // Import middleware
 const bodyParser = require('body-parser')
@@ -12,13 +15,13 @@ const PORT = process.env.PORT || 8000
 // Create express app
 const app = express()
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://juanpablo:30787004@cluster0.nrjca.azure.mongodb.net/mutantDB?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
 mongoose.connection.on('connected', () => {
-  console.log('Mongoose is connected!!!!');
+  console.log('Mongoose is connected!');
 });
 
 // Implement middleware
