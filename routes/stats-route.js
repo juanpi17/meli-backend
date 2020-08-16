@@ -19,10 +19,12 @@ router.get('/', async function(req, res) {
 
     if (numMutantsDNA && numHumansDNA) {
         
+        var ratio = numHumansDNA == 0 ? 0 : (numMutantsDNA / numHumansDNA);
+
         statsJSON = {
             "count_mutant_dna": numMutantsDNA,
             "count_human_dna": numHumansDNA,
-            "ratio": (numMutantsDNA / numHumansDNA),
+            "ratio": ratio,
         }
 
     }
