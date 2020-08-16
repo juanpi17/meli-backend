@@ -7,26 +7,31 @@ const Mutant = require('../models/mutant');
 // Create express router
 const router = express.Router()
 
-router.get('/', function(req, res) {
+router.get('/', async function(req, res) {
+
+    // find all mutants
+    const numMutantsDNA = await Mutant.countDocuments({ isMutant: true });
+    
+    // find all humans
+    const numHumansDNA = await Mutant.countDocuments({ isMutant: false });
+
+    var statsJSON = {};
+
+    if (numMutantsDNA && numHumansDNA) {
+        
+        statsJSON = {
+            "count_mutant_dna": numMutantsDNA,
+            "count_human_dna": numHumansDNA,
+            "ratio": (numMutantsDNA / numHumansDNA),
+        }
+
+    }
+
+    // generate response
     res.setHeader('Content-Type', 'application/json');
-    res.write(JSON.stringify({ a: 1 }));
+    res.write(JSON.stringify(statsJSON));
+    res.status(200);
     res.end();
-
-    // const mutant = new Mutant({
-    //     "dna": '["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]',
-    //     "isMutant": false
-    // });
-
-    // mutant.save((error) => {
-    //     if (error) {
-    //         res.status(500).json({ msg: 'Sorry, internal server errors' });
-    //         return;
-    //     }
-    //     // Mutant Saved
-    //     return res.json({
-    //         msg: 'Your data has been saved!!!!!!'
-    //     });
-    // });
 });
 
 // Export router
