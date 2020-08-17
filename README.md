@@ -30,5 +30,5 @@ node server.js
 
 ```
 npm run test
-
+```
 > El comando anterior genera el coverage code en el directorio "test-coverage".
