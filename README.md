@@ -45,13 +45,12 @@ curl --location --request POST 'https://meli-backend-test.herokuapp.com/mutant' 
 --header 'Content-Type: application/json' \
 --data-raw '{
     "dna": [
-        "ATGCGAG",
-        "CAGTTCA",
-        "TTTTGTA",
-        "AGTAGGA",
-        "CACCTAC",
-        "TCACTGG",
-        "AGTCTGA"
+        "ATGCGA",
+        "CAGTGC",
+        "TTATGT",
+        "AGAAGG",
+        "CCCCTA",
+        "TCACTG"
     ]
 }'
 ```
