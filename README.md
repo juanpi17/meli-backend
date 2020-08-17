@@ -56,7 +56,7 @@ curl --location --request POST 'https://meli-backend-test.herokuapp.com/mutant' 
 }'
 ```
 
-### Ver estadísticas
+#### Ver estadísticas
 
 https://meli-backend-test.herokuapp.com/stats
 
