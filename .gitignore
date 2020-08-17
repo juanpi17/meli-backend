@@ -3,6 +3,10 @@
 # Editor
 /.vscode
 
+# Test folders
+/tests
+/test-coverage
+
 # dependencies
 /node_modules
 /.pnp

@@ -12,14 +12,14 @@ exports.isMutant = async (req, res) => {
     // get dna from request body
     const dna = req.body.dna;
 
-    if ( isMutant(dna) ) 
+    if ( checkIfMutant(dna) ) 
         res.status(200).send("Mutant")
     else
         res.status(403).send("Not mutant") 
 };
 
-// main functionality
-function isMutant(dna) {
+// main functionality. Allow testing
+exports.checkIfMutant = (dna) => {
 
     var mutant = false;
     // true if the dna is valid (mutant or not mutant)
@@ -73,7 +73,7 @@ function isMutant(dna) {
         console.log(error);
     } finally {
 
-        // save into database if the dna was processed
+        // save into database if the dna was processed.
         if (dnaProcessed) {
 
             // create a string to make it easy to compare

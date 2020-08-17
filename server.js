@@ -17,7 +17,7 @@ const app = express()
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: false
 });
 
 mongoose.connection.on('connected', () => {
@@ -52,3 +52,6 @@ app.use((err, req, res, next) => {
 app.listen(PORT, function () {
   console.log("Server is running on "+ PORT +" port");
 });
+
+// Export server
+module.exports = app

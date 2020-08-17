@@ -1,7 +1,6 @@
 // Import express
 const express = require('express')
 
-
 // Import items controller
 const mutantController = require('../controllers/mutant-controller.js')
 
