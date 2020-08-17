@@ -31,7 +31,7 @@ router.get('/', async function(req, res) {
 
     // generate response
     res.setHeader('Content-Type', 'application/json');
-    res.write(JSON.stringify(statsJSON));
+    res.send(JSON.stringify(statsJSON));
     res.status(200);
     res.end();
 });

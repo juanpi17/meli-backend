@@ -14,7 +14,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "repository": {
     "type": "git",
