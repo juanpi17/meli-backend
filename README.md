@@ -32,3 +32,31 @@ node server.js
 npm run test
 ```
 > El comando anterior genera el coverage code en el directorio "test-coverage".
+
+### Instrucciones
+
+#### Comprobar ADN
+
+Enviar una secuencia de ADN mediante un HTTP POST con un JSON a https://meli-backend-test.herokuapp.com/mutant
+
+Ejemplo:
+```
+curl --location --request POST 'https://meli-backend-test.herokuapp.com/mutant' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "dna": [
+        "ATGCGAG",
+        "CAGTTCA",
+        "TTTTGTA",
+        "AGTAGGA",
+        "CACCTAC",
+        "TCACTGG",
+        "AGTCTGA"
+    ]
+}'
+```
+
+### Ver estadísticas
+
+https://meli-backend-test.herokuapp.com/stats
+
