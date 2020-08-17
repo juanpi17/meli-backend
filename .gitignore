@@ -4,7 +4,6 @@
 /.vscode
 
 # Test folders
-/tests
 /test-coverage
 
 # dependencies
