@@ -1,5 +1,3 @@
-const { response } = require('express');
-
 // Import Mutant model
 const Mutant = require('../models/mutant');
 
@@ -19,7 +17,7 @@ exports.isMutant = async (req, res) => {
 };
 
 // main functionality. Allow testing
-exports.checkIfMutant = (dna) => {
+function checkIfMutant(dna) {
 
     var mutant = false;
     // true if the dna is valid (mutant or not mutant)
@@ -85,19 +83,13 @@ exports.checkIfMutant = (dna) => {
             });
 
             // only insert if the dna isn't in the database yet
-            Mutant.update(
+            Mutant.updateOne(
                 {dna: dnaString}, 
                 {$setOnInsert: mutantDB},
                 {upsert: true}, 
-                function(err, numAffected) { 
+                function(err) {
                     if (err) {
                         console.log('Sorry, internal server errors');
-                    } else {
-                        // Mutant Saved
-                        numAffected > 0 ?
-                            console.log('New DNA saved into database') :
-                            console.log('DNA already exists on database');
-                        ;
                     }
                 }
             );
@@ -106,6 +98,8 @@ exports.checkIfMutant = (dna) => {
         return mutant;
     } 
 }
+
+exports.checkIfMutant = checkIfMutant;
 
 // convert dna array to a matrix 
 function convertArrayToMatrix(dna) {
