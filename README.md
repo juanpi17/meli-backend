@@ -19,12 +19,23 @@ Heroku (https://www.heroku.com/)
 ```
 npm install
 ```
+### Copiar las variables de entorno
+
+En el root del proyecto, hacer lo siguiente:
+
+Linux/MacOS:
+```
+cp .env.local .env
+```
+Windows:
+Copiar el archivo .env.local y renombrar la copia como .env
 
 ### Iniciar el servidor
 
 ```
 node server.js
 ```
+> El servidor se va a ejecutar en el puerto 8000 por defecto. Para ingresar al mismo, ir a http://localhost:8000
 
 ### Ejecutar tests
 
