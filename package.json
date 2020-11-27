@@ -5,9 +5,15 @@
     "verbose": true,
     "testRegex": "/*.test.js$",
     "collectCoverage": true,
-    "coverageReporters": ["json", "lcov", "text"],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text"
+    ],
     "coverageDirectory": "test-coverage",
-    "moduleDirectories": ["node_modules"]
+    "moduleDirectories": [
+      "node_modules"
+    ]
   },
   "version": "1.0.0",
   "description": "Test de backend para Mercado Libre",
